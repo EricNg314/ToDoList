@@ -40,12 +40,13 @@ module.exports.createTask = async (event, context) => {
     const data = await dynamoDb.put(params).promise();
     console.log(`createTask function success with data: ${JSON.stringify(data)}`);
 
-    return{
+    return {
       statusCode: 200,
-      body: JSON.stringify(data.Item)
+      body: JSON.stringify(params.Item)
     }
+
   } catch (err) {
-    console.log(`createTask function failed with error: ${err.stack}`)
+    console.error(`createTask function failed with error: ${err.stack}`)
     return {
       statusCode: 400,
       body: `Could not create task: ${err.stack}`
@@ -55,18 +56,28 @@ module.exports.createTask = async (event, context) => {
 };
 
 module.exports.getAllTasks = async (event, context) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'getAllTasks task',
-      method: event.httpMethod,
-      path: event.path,
-      query: event.queryStringParameters,
-      params: event.pathParameters,
-      body: event.body
-    })
-  };
-  return response;
+
+  const params = {
+    TableName: TASKS_TABLE
+  }
+
+  try {
+    const data = await dynamoDb.scan(params).promise();
+    console.log(`getAllTasks function success with data: ${JSON.stringify(data)}`);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data.Items)
+    }
+
+  } catch (err) {
+    console.error(`getAllTasks function failed with error: ${err.stack}`);
+
+    return {
+      statusCode: 400,
+      body: `Could not get all tasks: ${err.stack}`
+    }
+  }
 };
 
 module.exports.updateTask = async (event, context) => {
