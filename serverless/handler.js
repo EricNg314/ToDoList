@@ -1,23 +1,10 @@
 'use strict';
 
-module.exports.hello = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  };
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
-
-module.exports.createNote = async (event, context) => {
+module.exports.createTask = async (event, context) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'create note',
+      message: 'create task',
       method: event.httpMethod,
       path: event.path,
       query: event.queryStringParameters,
@@ -28,11 +15,11 @@ module.exports.createNote = async (event, context) => {
   return response;
 };
 
-module.exports.getAllNotes = async (event, context) => {
+module.exports.getAllTasks = async (event, context) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'getAllNotes text',
+      message: 'getAllTasks task',
       method: event.httpMethod,
       path: event.path,
       query: event.queryStringParameters,
@@ -43,11 +30,11 @@ module.exports.getAllNotes = async (event, context) => {
   return response;
 };
 
-module.exports.updateNote = async (event, context) => {
+module.exports.updateTask = async (event, context) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'updateNote text',
+      message: 'update task',
       method: event.httpMethod,
       path: event.path,
       query: event.queryStringParameters,
@@ -58,11 +45,11 @@ module.exports.updateNote = async (event, context) => {
   return response;
 };
 
-module.exports.deleteNote = async (event, context) => {
+module.exports.deleteTask = async (event, context) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'delete note',
+      message: 'delete task',
       method: event.httpMethod,
       path: event.path,
       query: event.queryStringParameters,

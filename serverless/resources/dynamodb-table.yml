@@ -1,0 +1,15 @@
+Resources:
+  TaskTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.tableName}
+      AttributeDefinitions:
+        - AttributeName: taskId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: taskId
+          KeyType: HASH
+      # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
