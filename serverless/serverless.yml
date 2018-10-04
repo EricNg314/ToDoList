@@ -6,7 +6,7 @@ provider:
   runtime: nodejs8.10
   region: us-west-1
   environment:
-    NOTES_TABLE: ${self:custom.tableName}
+    TASKS_TABLE: ${self:custom.tableName}
     AWS_DEPLOY_REGION: ${self:provider.region}
   iamRoleStatements:
     - Effect: Allow
@@ -25,7 +25,7 @@ functions:
     handler: handler.createTask
     events:
       - http:
-          path: /tasks/createTask
+          path: /tasks/create
           method: post
           cors: true
   getAllTasks:
@@ -39,14 +39,14 @@ functions:
     handler: handler.updateTask
     events:
       - http:
-          path: /tasks/{taskId}
+          path: /tasks/update/{taskId}
           method: patch
           cors: true
   deleteTask:
     handler: handler.deleteTask
     events:
       - http:
-          path: /tasks/{taskId}
+          path: /tasks/delete/{taskId}
           method: delete
           cors: true
 
