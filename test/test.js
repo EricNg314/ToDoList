@@ -1,8 +1,12 @@
 const axios = require('axios');
 
-axios.post('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/createTask')
+const test_objects = require('./test_objects.js');
+const createData = test_objects.createData;
+
+axios.post('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/create', createData)
 .then(response => {
-  // console.log(response);
+  console.log(response);
+  console.log('-----------------------------------------------')
   const data = response.data;
 
   console.log(`createTask function: `)
@@ -10,33 +14,33 @@ axios.post('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/cre
 })
 
 
-axios.get('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/all')
-.then(response => {
-  // console.log(response);
-  const data = response.data;
+// axios.get('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/all')
+// .then(response => {
+//   // console.log(response);
+//   const data = response.data;
 
-  console.log(`getAllTasks function: `)
-  console.log(JSON.stringify(data))
-})
-
-
-axios.patch('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/{taskId}')
-.then(response => {
-  // console.log(response);
-  const data = response.data;
-
-  console.log(`updateTask function: `)
-  console.log(JSON.stringify(data))
-})
+//   console.log(`getAllTasks function: `)
+//   console.log(JSON.stringify(data))
+// })
 
 
-axios.delete('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/{taskId}')
-.then(response => {
-  // console.log(response);
-  const data = response.data;
+// axios.patch('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/update/{taskId}')
+// .then(response => {
+//   // console.log(response);
+//   const data = response.data;
 
-  console.log(`deleteTask function: `)
-  console.log(JSON.stringify(data))
-})
+//   console.log(`updateTask function: `)
+//   console.log(JSON.stringify(data))
+// })
+
+
+// axios.delete('https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/delete/{taskId}')
+// .then(response => {
+//   // console.log(response);
+//   const data = response.data;
+
+//   console.log(`deleteTask function: `)
+//   console.log(JSON.stringify(data))
+// })
 
 
