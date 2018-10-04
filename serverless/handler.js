@@ -28,5 +28,50 @@ module.exports.createNote = async (event, context) => {
   return response;
 };
 
+module.exports.getAllNotes = async (event, context) => {
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'getAllNotes text',
+      method: event.httpMethod,
+      path: event.path,
+      query: event.queryStringParameters,
+      params: event.pathParameters,
+      body: event.body
+    })
+  };
+  return response;
+};
+
+module.exports.updateNote = async (event, context) => {
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'updateNote text',
+      method: event.httpMethod,
+      path: event.path,
+      query: event.queryStringParameters,
+      params: event.pathParameters,
+      body: event.body
+    })
+  };
+  return response;
+};
+
+module.exports.deleteNote = async (event, context) => {
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'delete note',
+      method: event.httpMethod,
+      path: event.path,
+      query: event.queryStringParameters,
+      params: event.pathParameters,
+      body: event.body
+    })
+  };
+  return response;
+};
+
 
 

@@ -70,7 +70,30 @@ functions:
           path: /notes/createNote
           method: post
           cors: true
+  getAllNotes:
+    handler: handler.getAllNotes
+    events:
+      - http:
+          path: /notes/all
+          method: get
+          cors: true
+  updateNote:
+    handler: handler.updateNote
+    events:
+      - http:
+          path: /notes/{noteId}
+          method: patch
+          cors: true
+  deleteNote:
+    handler: handler.deleteNote
+    events:
+      - http:
+          path: /notes/{noteId}
+          method: delete
+          cors: true
 
+
+          
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
