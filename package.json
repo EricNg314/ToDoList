@@ -1,0 +1,26 @@
+{
+  "name": "ToDoList",
+  "version": "1.0.0",
+  "description": "API created through Serverless Framework using AWS Lambda and DynamoDb.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricNg314/ToDoList.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EricNg314/ToDoList/issues"
+  },
+  "homepage": "https://github.com/EricNg314/ToDoList#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}

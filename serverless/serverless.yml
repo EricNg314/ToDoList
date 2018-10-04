@@ -64,7 +64,7 @@ functions:
           method: get
           cors: true
   createNote:
-    handler: handler.hello
+    handler: handler.createNote
     events:
       - http:
           path: /notes/createNote
