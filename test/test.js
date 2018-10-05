@@ -9,7 +9,10 @@ const createItem = (createData) => axios.post('https://zruegdeqol.execute-api.us
     let testResult = false;
     const data = response.data;
 
-    if (data.taskId === createData.taskId) {
+    if (data.taskId === createData.taskId && 
+      data.datePosted === createData.datePosted && 
+      data.status === createData.status && 
+      data.task === createData.task) {
       testResult = true;
     }
 
