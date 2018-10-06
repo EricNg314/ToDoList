@@ -46,6 +46,7 @@ module.exports.createTask = async (event, context) => {
     }
 
   } catch (err) {
+    console.error(`createTask function failed for taskId: ${taskId}`);
     console.error(`createTask function failed with error: ${err.stack}`)
     return {
       statusCode: 400,
@@ -64,7 +65,6 @@ module.exports.getAllTasks = async (event, context) => {
   try {
     const data = await dynamoDb.scan(params).promise();
     console.log(`getAllTasks function success with data: ${JSON.stringify(data)}`);
-
     return {
       statusCode: 200,
       body: JSON.stringify(data.Items)
@@ -81,18 +81,55 @@ module.exports.getAllTasks = async (event, context) => {
 };
 
 module.exports.updateTask = async (event, context) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'update task',
-      method: event.httpMethod,
-      path: event.path,
-      query: event.queryStringParameters,
-      params: event.pathParameters,
-      body: event.body
-    })
-  };
-  return response;
+
+  let parsed;
+
+  try {
+    parsed = JSON.parse(event.body);
+  } catch (err) {
+    console.error(`Failed to parse JSON ${event.body}: ${err.stack}`);
+    return {
+      statusCode: 500,
+      error: `Could not parse JSON: ${err.stack}`
+    }
+  }
+
+
+  const taskId = event.pathParameters.taskId;
+  const datePosted = parsed.datePosted;
+  const status = parsed.status;
+  const task = parsed.task;
+
+  // Using ExpressionAttributeNames for "status" column to change to '#status'. "Status" is a reserved keyword in AWS DynamoDB.
+  const params = {
+    TableName: TASKS_TABLE,
+    Key: { "taskId": taskId },
+    ExpressionAttributeNames: {"#status" : "status"},
+    UpdateExpression: "SET datePosted = :datePosted, #status = :status, task = :task",
+    ExpressionAttributeValues: {
+      ":datePosted": datePosted,
+      ":status": status,
+      ":task": task
+    },
+    ReturnValues: "ALL_NEW"
+  }
+
+  try {
+    const data = await dynamoDb.update(params).promise();
+    console.log(`updateTask function success with data: ${JSON.stringify(data)}`);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data)
+    }
+
+  } catch (err) {
+    console.error(`updateTask function failed for taskId: ${taskId}`);
+    console.error(`updateTask function failed with error: ${err.stack}`);
+    return {
+      statusCode: 400,
+      body: `Could not update task: ${err.stack}`
+    }
+  }
 };
 
 module.exports.deleteTask = async (event, context) => {
