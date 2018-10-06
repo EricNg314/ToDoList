@@ -47,6 +47,19 @@ functions:
                 {
                   "status":"$input.params('status')"
                 }
+  getTaskById:
+    handler: handler.getTaskById
+    events:
+      - http:
+          path: /tasks
+          method: get
+          cors: true
+          request:
+            template:
+              application/json: >
+                {
+                  "taskId":"$input.params('taskId')"
+                }
   updateTask:
     handler: handler.updateTask
     events:

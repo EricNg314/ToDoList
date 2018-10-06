@@ -114,6 +114,34 @@ module.exports.getTasksByStatus = async (event, context) => {
 
 
 
+module.exports.getTaskById = async (event, context) => {
+
+  const taskId = event.queryStringParameters.taskId;
+
+  const params = {
+    TableName: TASKS_TABLE,
+    Key: { "taskId": taskId }
+  }
+
+  try {
+    // Using get method since taskId is our primary key.
+    const data = await dynamoDb.get(params).promise();
+    console.log(`getTaskById function success with data: ${JSON.stringify(data)}`);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data.Item)
+    }
+
+  } catch (err) {
+    console.error(`getTaskById function failed for taskId: ${taskId}`);
+    console.error(`getTaskById function failed with error: ${err.stack}`);
+    return {
+      statusCode: 400,
+      body: `Could not update task: ${err.stack}`
+    }
+  }
+};
+
 module.exports.updateTask = async (event, context) => {
 
   let parsed;
