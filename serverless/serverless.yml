@@ -35,6 +35,18 @@ functions:
           path: /tasks/all
           method: get
           cors: true
+  getTasksByStatus:
+    handler: handler.getTasksByStatus
+    events:
+      - http:
+          path: /tasks/filter
+          method: get
+          request:
+            template:
+              application/json: >
+                {
+                  "status":"$input.params('status')"
+                }
   updateTask:
     handler: handler.updateTask
     events:

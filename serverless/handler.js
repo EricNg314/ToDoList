@@ -80,6 +80,40 @@ module.exports.getAllTasks = async (event, context) => {
   }
 };
 
+module.exports.getTasksByStatus = async (event, context) => {
+
+  const status = event.queryStringParameters.status;
+
+  // Using ExpressionAttributeNames for "status" column to change to '#status'. "Status" is a reserved keyword in AWS DynamoDB.
+  const params = {
+    TableName: TASKS_TABLE,
+    ExpressionAttributeNames: {"#status": "status"},
+    FilterExpression: "#status = :status",
+    ExpressionAttributeValues:{
+      ":status": status
+    }
+  }
+
+  try {
+    const data = await dynamoDb.scan(params).promise();
+    console.log(`getTasksByStatus function success with data: ${JSON.stringify(data)}`);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data.Items)
+    }
+
+  } catch (err) {
+    console.error(`getTasksByStatus function failed with error: ${err.stack}`);
+
+    return {
+      statusCode: 400,
+      body: `Could not get all tasks: ${err.stack}`
+    }
+  }
+};
+
+
+
 module.exports.updateTask = async (event, context) => {
 
   let parsed;
@@ -145,7 +179,7 @@ module.exports.deleteTask = async (event, context) => {
     const data = await dynamoDb.delete(params).promise();
     console.log(`deleteTask function success with data: ${JSON.stringify(data)}`);
 
-    return{
+    return {
       statusCode: 200,
       body: JSON.stringify(data)
     }
