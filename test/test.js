@@ -85,8 +85,8 @@ async function test(createData, updateData) {
 
     console.log('-----------------getAllTasks TEST-------------------')
     const getAllTaskTest = await getAllTasks(updateData);
-    console.log(`TEST RESULT - ${getAllTaskTest.testResult} - getAllTaskTest`);
-    console.log(`TEST RESULT - ${getAllTaskTest.testResultOfCreate} - getAllTaskTest - createItem VALIDATION \n`);
+    console.log(`TEST RESULT - ${getAllTaskTest.testResult} - getAllTask`);
+    console.log(`TEST RESULT - ${getAllTaskTest.testResultOfCreate} - getAllTask - createItem VALIDATION \n`);
 
     console.log('-----------------updateTask TEST-------------------')
     const updateTaskTest = await updateTask(createData.taskId, updateData);
@@ -95,6 +95,11 @@ async function test(createData, updateData) {
     console.log('-----------------deleteTask TEST-------------------')
     const deleteTaskTest = await deleteTask(createData.taskId);
     console.log(`TEST RESULT - ${deleteTaskTest} - deleteTask\n`);
+
+    console.log('-----------------getAllAfterDelete TEST-------------------')
+    const getAllAfterDeleteTest = await getAllTasks(updateData);
+    console.log(`TEST RESULT - ${getAllAfterDeleteTest.testResult} - getAllTasks`);
+    console.log(`TEST RESULT - ${!getAllAfterDeleteTest.testResultOfCreate} - getAllTasks - deleteTask VALIDATION \n`);
 
     testComplete = true;
   } catch (err) {
