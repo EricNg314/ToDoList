@@ -104,7 +104,7 @@ module.exports.updateTask = async (event, context) => {
   const params = {
     TableName: TASKS_TABLE,
     Key: { "taskId": taskId },
-    ExpressionAttributeNames: {"#status" : "status"},
+    ExpressionAttributeNames: { "#status": "status" },
     UpdateExpression: "SET datePosted = :datePosted, #status = :status, task = :task",
     ExpressionAttributeValues: {
       ":datePosted": datePosted,
@@ -133,18 +133,31 @@ module.exports.updateTask = async (event, context) => {
 };
 
 module.exports.deleteTask = async (event, context) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'delete task',
-      method: event.httpMethod,
-      path: event.path,
-      query: event.queryStringParameters,
-      params: event.pathParameters,
-      body: event.body
-    })
-  };
-  return response;
+
+  const taskId = event.pathParameters.taskId;
+
+  const params = {
+    TableName: TASKS_TABLE,
+    Key: { 'taskId': taskId }
+  }
+
+  try {
+    const data = await dynamoDb.delete(params).promise();
+    console.log(`deleteTask function success with data: ${JSON.stringify(data)}`);
+
+    return{
+      statusCode: 200,
+      body: JSON.stringify(data)
+    }
+
+  } catch (err) {
+    console.error(`deleteTask function failed for taskId: ${taskId}`);
+    console.error(`deleteTask function failed with error: ${err.stack}`);
+    return {
+      statusCode: 400,
+      body: `Could not delete task: ${err.stack}`
+    }
+  }
 };
 
 
