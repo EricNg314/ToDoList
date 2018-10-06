@@ -156,7 +156,6 @@ module.exports.updateTask = async (event, context) => {
     }
   }
 
-
   const taskId = event.pathParameters.taskId;
   const datePosted = parsed.datePosted;
   const status = parsed.status;

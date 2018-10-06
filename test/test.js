@@ -117,7 +117,7 @@ const deleteTask = (taskId) => axios.delete(`https://zruegdeqol.execute-api.us-w
   })
 // deleteTask('random taskId here');
 
-async function test(createData, updateData) {
+async function test(createData, updateData, statusQueryValue) {
   let testComplete = false;
   console.log('-----------------START TEST-------------------\n')
   try {
