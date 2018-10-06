@@ -46,7 +46,7 @@ const getAllTasks = () => axios.get('https://zruegdeqol.execute-api.us-west-1.am
 // getAllTasks()
 
 
-const getTasksByStatus = (createData, status) => axios.get(`https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/filter?status=${status}`)
+const getTasksByStatus = (createData, updateData, status) => axios.get(`https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/filter?status=${status}`)
   .then(response => {
     let testResult = false;
     let testResultOfUpdate = false;
@@ -59,14 +59,29 @@ const getTasksByStatus = (createData, status) => axios.get(`https://zruegdeqol.e
     }
 
     for (let i = 0; i < data.length; i++) {
-      if (data[i].taskId === createData.taskId && data[i].status === status) {
+      if (data[i].taskId === createData.taskId && data[i].status === updateData.status) {
         testResultOfUpdate = true;
       }
     }
 
     return { 'testResult': testResult, 'testResultOfUpdate': testResultOfUpdate };
   })
-  // getTasksByStatus(createData, statusQueryValue);
+// getTasksByStatus(createData, statusQueryValue);
+
+
+const getTaskById = (taskId) => axios.get(`https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks?taskId=${taskId}`)
+  .then(response => {
+    let testResult = false;
+
+    const data = response.data;
+
+    if (response.status === 200 && taskId === data.taskId) {
+      testResult = true;
+    }
+
+    return testResult;
+  })
+// getTaskById('131454f0-c818-11e8-96f4-459028b3cb17');
 
 
 const updateTask = (taskId, updateData) => axios.patch(`https://zruegdeqol.execute-api.us-west-1.amazonaws.com/dev/tasks/update/${taskId}`, updateData)
@@ -116,16 +131,20 @@ async function test(createData, updateData) {
     console.log(`TEST RESULT - ${getAllTaskTest.testResultOfCreate} - getAllTask - createItem VALIDATION \n`);
 
     console.log('-----------------getTasksByStatus IF "Complete" TEST-------------------')
-    const getTasksByStatusTest = await getTasksByStatus(createData, statusQueryValue);
+    const getTasksByStatusTest = await getTasksByStatus(createData, updateData, statusQueryValue);
     console.log(`TEST RESULT - ${getTasksByStatusTest.testResult} - getTasksByStatus`);
     console.log(`TEST RESULT - ${!getTasksByStatusTest.testResultOfUpdate} - getTasksByStatus - updateTask VALIDATION \n`);
+
+    console.log('-----------------getTaskById TEST-------------------')
+    const getTaskByIdTest = await getTaskById(createData.taskId);
+    console.log(`TEST RESULT - ${getTaskByIdTest} - getTaskById\n`);
 
     console.log('-----------------updateTask TEST-------------------')
     const updateTaskTest = await updateTask(createData.taskId, updateData);
     console.log(`TEST RESULT - ${updateTaskTest} - updateTask\n`);
 
     console.log('-----------------getTasksByStatus IF "Complete" AFTER updateTask TEST-------------------')
-    const getTasksByStatusAfterUpdateTest = await getTasksByStatus(createData, statusQueryValue);
+    const getTasksByStatusAfterUpdateTest = await getTasksByStatus(createData, updateData, statusQueryValue);
     console.log(`TEST RESULT - ${getTasksByStatusAfterUpdateTest.testResult} - getTasksByStatus`);
     console.log(`TEST RESULT - ${getTasksByStatusAfterUpdateTest.testResultOfUpdate} - getTasksByStatus - updateTask VALIDATION \n`);
 
